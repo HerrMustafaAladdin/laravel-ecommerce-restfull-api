@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\BrandController;
+use App\Http\Controllers\API\V1\BrandController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
