@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Http\Controllers\Controller;
 use App\Http\Resources\API\V1\BrandResponce;
 use App\Models\API\V1\Brand;
 use App\Traits\ApiResponser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use SebastianBergmann\Type\NullType;
 
-class BrandController extends Controller
+
+class BrandController extends ApiController
 {
     use ApiResponser;
     /**
