@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('display_name')->unique();
 
             $table->softDeletes();
-            $table->timestamps();
+            $table->nullableTimestamps();
         });
     }
 

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API\V1;
 use App\Http\Controllers\Controller;
 use App\Models\API\V1\Brand;
 use App\Traits\ApiResponser;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use SebastianBergmann\Type\NullType;
 
 class BrandController extends Controller
 {
@@ -25,7 +27,25 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $validator = validatedData($request->all(),[
+            'name'          =>  'required|string|min:2|max:100',
+            'display_name'  => 'required|string|min:2|max:100'
+        ]);
+
+        if($validator->fails())
+        {
+            $apiController = new ApiController();
+            return $apiController->errorResponce($validator->messages() ,422);
+        }
+
+        $brand = Brand::query()->create([
+            'name'          =>  $request->input('name'),
+            'display_name'  =>  $request->input('display_name'),
+            'created_at'    =>  Carbon::now(),
+            'updated_at'    =>  null
+        ]);
+
+        return $this->successResponce($brand, 201);
     }
 
     /**
@@ -33,7 +53,7 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
-        //
+        return $this->successResponce($brand, 200);
     }
 
     /**
@@ -41,7 +61,25 @@ class BrandController extends Controller
      */
     public function update(Request $request, Brand $brand)
     {
-        //
+        $validator = validatedData($request->all(),[
+            'name'          =>  'required|string|min:2|max:100',
+            'display_name'  => 'required|string|min:2|max:100'
+        ]);
+
+        if($validator->fails())
+        {
+            $apiController = new ApiController();
+            return $apiController->errorResponce($validator->messages() ,422);
+        }
+
+        $brand->update([
+            'name'          =>  $request->input('name'),
+            'display_name'  =>  $request->input('display_name'),
+            'created_at'    =>  $brand->created_at,
+            'updated_at'    =>  Carbon::now()
+        ]);
+
+        return $this->successResponce($brand, 201);
     }
 
     /**
@@ -49,6 +87,7 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        //
+        $brand->delete();
+        return $this->deleteResponce(200);
     }
 }

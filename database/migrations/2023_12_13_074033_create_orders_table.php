@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('payment_status');
             $table->text('description');
 
-            $table->timestamps();
+            $table->nullableTimestamps();
         });
     }
 

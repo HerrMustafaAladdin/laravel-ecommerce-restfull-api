@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('quantity');
             $table->string('subtotal');
 
-            $table->timestamps();
+            $table->nullableTimestamps();
         });
     }
 

@@ -2,8 +2,6 @@
 
 namespace App\Traits;
 
-use function PHPUnit\Framework\isEmpty;
-
 trait ApiResponser
 {
 
@@ -12,7 +10,23 @@ trait ApiResponser
         return response()->json([
             'StatusMessage'     =>      'Success',
             'Message'           =>      'Your request has been successfully sent.',
-            'Data'              =>      isEmpty($data) ? 'There is no information' : $data,
+            'Data'              =>      $data,
+        ],$statusCode);
+    }
+
+    public function errorResponce($errorMessage, $statusCode)
+    {
+        return response()->json([
+            'StatusMessage'     =>      'Error',
+            'Message'           =>      $errorMessage,
+        ],$statusCode);
+    }
+
+    public function deleteResponce($statusCode)
+    {
+        return response()->json([
+            'StatusMessage'     =>      'Delete',
+            'Message'           =>      'The deletion was successful.',
         ],$statusCode);
     }
 

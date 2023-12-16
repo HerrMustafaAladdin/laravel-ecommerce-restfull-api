@@ -20,6 +20,8 @@ class Brand extends Model
      */
     protected $fillable = [
         'name',
-        'display_name'
+        'display_name',
+        'created_at',
+        'updated_at'
     ];
 }

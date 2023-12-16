@@ -26,7 +26,7 @@ return new class extends Migration
             $table->tinyInteger('status');
             $table->string('request_from');
 
-            $table->timestamps();
+            $table->nullableTimestamps();
         });
     }
 
