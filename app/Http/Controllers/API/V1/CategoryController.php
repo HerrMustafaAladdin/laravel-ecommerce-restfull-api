@@ -103,7 +103,10 @@ class CategoryController extends ApiController
      */
     public function destroy(Category $category)
     {
+        DB::beginTransaction();
         $category->delete();
+        DB::commit();
+        
         return $this->deleteResponce(200);
     }
 }
