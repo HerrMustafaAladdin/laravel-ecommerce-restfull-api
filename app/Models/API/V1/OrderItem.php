@@ -1,27 +1,29 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\API\V1;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class OrderItem extends Model
 {
     use HasFactory;
 
     /**
      * @var string
      */
-    protected $table = "categories";
-
+    protected $table = "order_items";
 
     /**
      * @var string[]
      */
     protected $fillable = [
-        'parent_id',
-        'name',
-        'description'
+        'order_id',
+        'product_id',
+        'price',
+        'quantity',
+        'subtotal',
     ];
+
 
 }

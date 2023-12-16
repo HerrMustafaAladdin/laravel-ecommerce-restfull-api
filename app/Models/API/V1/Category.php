@@ -1,25 +1,27 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\API\V1;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Brand extends Model
+class Category extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     /**
      * @var string
      */
-    protected $table = "brands";
+    protected $table = "categories";
+
 
     /**
      * @var string[]
      */
     protected $fillable = [
+        'parent_id',
         'name',
-        'display_name'
+        'description'
     ];
+
 }
