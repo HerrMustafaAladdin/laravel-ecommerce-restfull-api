@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -40,34 +41,41 @@ class Handler extends ExceptionHandler
     {
         if($e instanceof ModelNotFoundException)
         {
+            DB::rollBack();
             return $this->errorResponce($e->getMessage(), 404);
         }
 
         if($e instanceof NotFoundHttpException)
         {
+            DB::rollBack();
             return $this->errorResponce($e->getMessage(), 404);
         }
 
         if($e instanceof MethodNotAllowedHttpException)
         {
+            DB::rollBack();
             return $this->errorResponce($e->getMessage(), 404);
         }
 
         if($e instanceof Exception)
         {
+            DB::rollBack();
             return $this->errorResponce($e->getMessage(), 404);
         }
 
         if($e instanceof Error)
         {
+            DB::rollBack();
             return $this->errorResponce($e->getMessage(), 404);
         }
 
         if(config('app.debug'))
         {
+            DB::rollBack();
             return parent::render($request, $e);
         }
-
+        
+        DB::rollBack();
         return $this->errorResponce($e->getMessage(), 500);
     }
 }

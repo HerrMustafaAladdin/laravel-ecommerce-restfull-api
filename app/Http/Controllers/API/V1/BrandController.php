@@ -8,6 +8,7 @@ use App\Models\API\V1\Brand;
 use App\Traits\ApiResponser;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use SebastianBergmann\Type\NullType;
 
 class BrandController extends Controller
@@ -20,7 +21,11 @@ class BrandController extends Controller
     {
         $Brand = Brand::query()->orderBy('id', 'DESC')->paginate(10);
 
-        return $this->successResponce(BrandResponce::collection($Brand),200);
+        return $this->successResponce([
+            'Data'  =>   BrandResponce::collection($Brand),
+            'Links' =>   BrandResponce::collection($Brand)->response()->getData()->links,
+            'Meta'  =>   BrandResponce::collection($Brand)->response()->getData()->meta,
+        ],200);
     }
 
     /**
@@ -39,12 +44,17 @@ class BrandController extends Controller
             return $apiController->errorResponce($validator->messages() ,422);
         }
 
+
+        DB::beginTransaction();
+
         $brand = Brand::query()->create([
             'name'          =>  $request->input('name'),
             'display_name'  =>  $request->input('display_name'),
             'created_at'    =>  Carbon::now(),
             'updated_at'    =>  null
         ]);
+
+        DB::commit();
 
         return $this->successResponce((new BrandResponce($brand)), 201);
     }
@@ -73,6 +83,8 @@ class BrandController extends Controller
             return $apiController->errorResponce($validator->messages() ,422);
         }
 
+        DB::beginTransaction();
+
         $brand->update([
             'name'          =>  $request->input('name'),
             'display_name'  =>  $request->input('display_name'),
@@ -80,7 +92,9 @@ class BrandController extends Controller
             'updated_at'    =>  Carbon::now()
         ]);
 
-        return $this->successResponce((new BrandResponce($brand)), 201);
+        DB::commit();
+
+        return $this->successResponce( ( new BrandResponce($brand) ), 201);
     }
 
     /**
