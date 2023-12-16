@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\API\V1\BrandResponce;
 use App\Models\API\V1\Brand;
 use App\Traits\ApiResponser;
 use Carbon\Carbon;
@@ -17,9 +18,9 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $Brand = Brand::query()->orderBy('id', 'DESC')->get();
+        $Brand = Brand::query()->orderBy('id', 'DESC')->paginate(10);
 
-        return $this->successResponce($Brand,200);
+        return $this->successResponce(BrandResponce::collection($Brand),200);
     }
 
     /**
@@ -45,7 +46,7 @@ class BrandController extends Controller
             'updated_at'    =>  null
         ]);
 
-        return $this->successResponce($brand, 201);
+        return $this->successResponce((new BrandResponce($brand)), 201);
     }
 
     /**
@@ -53,7 +54,7 @@ class BrandController extends Controller
      */
     public function show(Brand $brand)
     {
-        return $this->successResponce($brand, 200);
+        return $this->successResponce((new BrandResponce($brand)), 200);
     }
 
     /**
@@ -79,7 +80,7 @@ class BrandController extends Controller
             'updated_at'    =>  Carbon::now()
         ]);
 
-        return $this->successResponce($brand, 201);
+        return $this->successResponce((new BrandResponce($brand)), 201);
     }
 
     /**
