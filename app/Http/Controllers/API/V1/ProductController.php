@@ -61,12 +61,14 @@ class ProductController extends Controller
             'created_at'        =>  Carbon::now(),
             'updated_at'        =>  null
         ]);
+        
+        upload_image($request->primary_image, env('Product_IMAGE_PATH'),$imageName);
 
         foreach ($request->product_image as $image) {
             $imageName = generateFileNameImages($image);
             upload_image($image, env('Product_IMAGE_PATH'),$imageName);
             ProductImage::query()->create([
-                'product_id'    =>  $product->id,
+                'product_id'    =>  1,
                 'image'         =>  $imageName,
                 'created_at'    =>  Carbon::now(),
                 'updated_at'    =>  null
@@ -75,7 +77,7 @@ class ProductController extends Controller
 
         DB::commit();
 
-        upload_image($request->primary_image, env('Product_IMAGE_PATH'),$imageName);
+
 
         return $this->successResponce((new ProductResponce($product)), 201);
     }
