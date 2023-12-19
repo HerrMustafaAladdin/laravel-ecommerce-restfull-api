@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\V1\BrandController;
 use App\Http\Controllers\API\V1\CategoryController;
+use App\Http\Controllers\API\V1\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,4 +28,7 @@ Route::prefix('v1')->group(function(){
     Route::apiResource('categories',CategoryController::class);
     Route::get('/categories/{category}/children',[CategoryController::class, 'children']);
     Route::get('/categories/{category}/parent',[CategoryController::class, 'parent']);
+
+    //    ================================================================== products
+    Route::apiResource('products', ProductController::class);
 });
