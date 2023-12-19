@@ -20,7 +20,11 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::query()->orderBy('id','DESC')->paginate(10);
-        return $this->successResponce(ProductResponce::collection($products),200);
+        return $this->successResponce([
+            "Data"  =>  ProductResponce::collection($products->load('images')),
+            "Links" =>  ProductResponce::collection($products)->response()->getData()->links,
+            "Meta"  =>  ProductResponce::collection($products)->response()->getData()->meta
+        ],200);
 
     }
 
@@ -33,7 +37,7 @@ class ProductController extends Controller
             'brand_id'          =>      'required|integer|exists:brands,id',
             'category_id'       =>      'required|integer|exists:categories,id',
             'primary_image'     =>      'required|mimes:jpg,png,webp',
-            'product_image.*'   =>      'required|mimes:jpg,png,webp',
+            'product_image.*'   =>      'nullabe|mimes:jpg,png,webp',
             'price'             =>      'required|string',
             'quantity'          =>      'required|string',
             'description'       =>      'required|string',
@@ -61,25 +65,25 @@ class ProductController extends Controller
             'created_at'        =>  Carbon::now(),
             'updated_at'        =>  null
         ]);
-        
+
         upload_image($request->primary_image, env('Product_IMAGE_PATH'),$imageName);
 
-        foreach ($request->product_image as $image) {
-            $imageName = generateFileNameImages($image);
-            upload_image($image, env('Product_IMAGE_PATH'),$imageName);
-            ProductImage::query()->create([
-                'product_id'    =>  1,
-                'image'         =>  $imageName,
-                'created_at'    =>  Carbon::now(),
-                'updated_at'    =>  null
-            ]);
+        if($request->product_images){
+            foreach ($request->product_images as $image) {
+                $imageName = generateFileNameImages($image);
+                upload_image($image, env('Product_IMAGE_PATH'),$imageName);
+                ProductImage::query()->create([
+                    'product_id'    =>  1,
+                    'image'         =>  $imageName,
+                    'created_at'    =>  Carbon::now(),
+                    'updated_at'    =>  null
+                ]);
+            }
         }
 
         DB::commit();
 
-
-
-        return $this->successResponce((new ProductResponce($product)), 201);
+        return $this->successResponce(new ProductResponce($product), 201);
     }
 
     /**
