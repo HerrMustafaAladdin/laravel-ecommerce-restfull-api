@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->group(function(){
     //    ================================================================== Brands
     Route::apiResource('brands',BrandController::class);
+    Route::get('/brands/{brand}/products',[BrandController::class, 'products']);
     //    ================================================================== Category
     Route::apiResource('categories',CategoryController::class);
     Route::get('/categories/{category}/children',[CategoryController::class, 'children']);
