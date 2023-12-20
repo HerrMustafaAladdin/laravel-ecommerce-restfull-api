@@ -19,7 +19,8 @@ class BrandResponce extends JsonResource
             'Display name'  =>  $this->display_name,
             'Created Data'  =>  $this->created_at,
             'Updated Data'  =>  $this->updated_at,
-            'Deleted Data'  =>  is_null($this->deleted_at) ? '-' : 'Deleted'
+            'Deleted Data'  =>  is_null($this->deleted_at) ? '-' : 'Deleted',
+            'Products'      =>  ProductResponce::collection($this->whenLoaded('products')->load('images'))
         ];
     }
 }
