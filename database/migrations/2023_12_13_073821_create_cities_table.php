@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('cities', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('province_id');
+            $table->foreign('province_id')->references('id')->on('provinces');
+            $table->string('name');
             $table->nullableTimestamps();
         });
     }

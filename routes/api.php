@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\V1\BrandController;
 use App\Http\Controllers\API\V1\CategoryController;
+use App\Http\Controllers\API\V1\PaymentController;
 use App\Http\Controllers\API\V1\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,4 +34,8 @@ Route::prefix('v1')->group(function(){
 
     //    ================================================================== products
     Route::apiResource('products', ProductController::class);
+
+    //    ================================================================== Payment
+    Route::post('payment/send',[PaymentController::class,'send']);
+    Route::post('payment/verify',[PaymentController::class,'verify']);
 });

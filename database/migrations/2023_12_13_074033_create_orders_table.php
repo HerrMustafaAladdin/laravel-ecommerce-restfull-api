@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('total_amount');
             $table->string('paying_amount');
             $table->string('delivery_amount');
-            $table->string('payment_status');
+            $table->string('payment_status')->default(0);
             $table->text('description');
 
             $table->nullableTimestamps();
