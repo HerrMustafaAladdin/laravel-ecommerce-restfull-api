@@ -104,4 +104,10 @@ class BrandController extends ApiController
         $brand->delete();
         return $this->deleteResponce(200);
     }
+
+    public function products(Brand $brand)
+    {
+        return $this->successResponce(new BrandResponce($brand->load('products')),200);
+    }
+
 }
