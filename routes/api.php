@@ -24,24 +24,31 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function(){
-    //    ================================================================== Auth
 
+    //    ================================================================== Auth
     Route::post('/register',[AuthController::class, 'register']);
     Route::post('/login',[AuthController::class, 'login']);
 
-    //    ================================================================== Brands
-    Route::apiResource('brands',BrandController::class);
-    Route::get('/brands/{brand}/products',[BrandController::class, 'products']);
-    //    ================================================================== Category
-    Route::apiResource('categories',CategoryController::class);
-    Route::get('/categories/{category}/children',[CategoryController::class, 'children']);
-    Route::get('/categories/{category}/parent',[CategoryController::class, 'parent']);
-    Route::get('/categories/{category}/products',[CategoryController::class, 'products']);
+    //    ================================================================== Route group set middleware Sanctum
+    Route::prefix('/')->middleware('auth:sanctum')->group(function(){
 
-    //    ================================================================== products
-    Route::apiResource('products', ProductController::class);
+        Route::post('logout',[AuthController::class, 'logout']);
 
-    //    ================================================================== Payment
-    Route::post('payment/send',[PaymentController::class,'send']);
-    Route::post('payment/verify',[PaymentController::class,'verify']);
+        //    ================================================================== Brands
+        Route::apiResource('brands',BrandController::class);
+        Route::get('/brands/{brand}/products',[BrandController::class, 'products']);
+        //    ================================================================== Category
+        Route::apiResource('categories',CategoryController::class);
+        Route::get('/categories/{category}/children',[CategoryController::class, 'children']);
+        Route::get('/categories/{category}/parent',[CategoryController::class, 'parent']);
+        Route::get('/categories/{category}/products',[CategoryController::class, 'products']);
+
+        //    ================================================================== products
+        Route::apiResource('products', ProductController::class);
+
+        //    ================================================================== Payment
+        Route::post('payment/send',[PaymentController::class,'send']);
+        Route::post('payment/verify',[PaymentController::class,'verify']);
+        
+    });
 });
