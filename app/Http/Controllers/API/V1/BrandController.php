@@ -21,7 +21,7 @@ class BrandController extends ApiController
         $Brand = Brand::query()->orderBy('id', 'DESC')->paginate(10);
 
         return $this->successResponce([
-            'Data'  =>   BrandResponce::collection($Brand),
+            'Data'  =>   BrandResponce::collection($Brand->load('products')),
             'Links' =>   BrandResponce::collection($Brand)->response()->getData()->links,
             'Meta'  =>   BrandResponce::collection($Brand)->response()->getData()->meta,
         ],200);

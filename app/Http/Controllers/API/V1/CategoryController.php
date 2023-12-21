@@ -22,7 +22,7 @@ class CategoryController extends ApiController
 
         return $this->successResponce(
             [
-                'Data'  =>  CategoryResource::collection($categories),
+                'Data'  =>  CategoryResource::collection($categories->load('products')),
                 'Links' =>  CategoryResource::collection($categories)->response()->getData()->links,
                 'Meta'  =>  CategoryResource::collection($categories)->response()->getData()->meta,
             ],200);
