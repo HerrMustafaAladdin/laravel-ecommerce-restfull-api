@@ -27,6 +27,7 @@ Route::prefix('v1')->group(function(){
     //    ================================================================== Auth
 
     Route::post('/register',[AuthController::class, 'register']);
+    Route::post('/login',[AuthController::class, 'login']);
 
     //    ================================================================== Brands
     Route::apiResource('brands',BrandController::class);
