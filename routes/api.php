@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\BrandController;
 use App\Http\Controllers\API\V1\CategoryController;
 use App\Http\Controllers\API\V1\PaymentController;
@@ -23,6 +24,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function(){
+    //    ================================================================== Auth
+
+    Route::post('/register',[AuthController::class, 'register']);
+
     //    ================================================================== Brands
     Route::apiResource('brands',BrandController::class);
     Route::get('/brands/{brand}/products',[BrandController::class, 'products']);
